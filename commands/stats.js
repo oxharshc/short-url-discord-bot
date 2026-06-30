@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, MessageFlags } = require("discord.js");
-const Url = require("../models/Url");
+const Url = require("../models/url.js");
 
 function extractShortId(input) {
   const value = input.trim();
