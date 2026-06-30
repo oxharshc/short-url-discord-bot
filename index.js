@@ -3,7 +3,13 @@ require("dotenv").config();
 const fs = require("node:fs");
 const path = require("node:path");
 const mongoose = require("mongoose");
-const { Client, Collection, GatewayIntentBits, Events } = require("discord.js");
+const {
+  Client,
+  Collection,
+  GatewayIntentBits,
+  Events,
+  MessageFlags,
+} = require("discord.js");
 
 const startServer = require("./server");
 
@@ -63,8 +69,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
     console.error("Command error:", error);
 
     const message = {
-      content: "❌ There was an error while executing this command.",
-      ephemeral: true,
+      content: "There was an error while executing this command.",
+      flags: MessageFlags.Ephemeral,
     };
 
     if (interaction.deferred || interaction.replied) {
