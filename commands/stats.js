@@ -1,5 +1,5 @@
-const { SlashCommandBuilder } = require("discord.js");
-const Url = require("../models/url.js");
+const { SlashCommandBuilder, MessageFlags } = require("discord.js");
+const Url = require("../models/Url");
 
 function extractShortId(input) {
   const value = input.trim();
@@ -28,20 +28,22 @@ module.exports = {
     const input = interaction.options.getString("id");
     const shortId = extractShortId(input);
 
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({
+      flags: MessageFlags.Ephemeral,
+    });
 
     const url = await Url.findOne({ shortId });
 
     if (!url) {
-      return interaction.editReply("❌ No short link found with that ID.");
+      return interaction.editReply("No short link found with that ID.");
     }
 
     return interaction.editReply(
-      `📊 **Stats for \`${shortId}\`**\n` +
-        `🔗 Original: <${url.originalUrl}>\n` +
-        `👆 Clicks: **${url.clicks}**\n` +
-        `👤 Created By: <@${url.createdBy}>\n` +
-        `📅 Created: <t:${Math.floor(url.createdAt.getTime() / 1000)}:F>`,
+      `Stats for \`${shortId}\`\n` +
+        `Original: <${url.originalUrl}>\n` +
+        `Clicks: **${url.clicks}**\n` +
+        `Created By: <@${url.createdBy}>\n` +
+        `Created: <t:${Math.floor(url.createdAt.getTime() / 1000)}:F>`,
     );
   },
 };
