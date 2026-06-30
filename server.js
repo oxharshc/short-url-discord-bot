@@ -15,7 +15,7 @@ function startServer() {
       const url = await Url.findOneAndUpdate(
         { shortId },
         { $inc: { clicks: 1 } },
-        { new: true },
+        { returnDocument: "after" },
       );
 
       if (!url) {
@@ -32,7 +32,7 @@ function startServer() {
   const PORT = process.env.PORT || 3001;
 
   app.listen(PORT, () => {
-    console.log(`🌐 Redirect server running on port ${PORT}`);
+    console.log(`Redirect server running on port ${PORT}`);
   });
 }
 
