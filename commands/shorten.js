@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 const { nanoid } = require("nanoid");
 const Url = require("../models/url.js");
 
@@ -39,15 +39,15 @@ module.exports = {
       parsedUrl = new URL(originalUrl);
     } catch {
       return interaction.reply({
-        content: "❌ Invalid URL. Please include `http://` or `https://`.",
-        ephemeral: true,
+        content: "Invalid URL. Please include `http://` or `https://`.",
+        flags: MessageFlags.Ephemeral,
       });
     }
 
     if (!["http:", "https:"].includes(parsedUrl.protocol)) {
       return interaction.reply({
-        content: "❌ Only `http://` and `https://` URLs are allowed.",
-        ephemeral: true,
+        content: "Only `http://` and `https://` URLs are allowed.",
+        flags: MessageFlags.Ephemeral,
       });
     }
 
@@ -60,7 +60,7 @@ module.exports = {
 
     if (existing) {
       return interaction.editReply(
-        `🔗 You already shortened this URL:\n${getBaseUrl()}/${existing.shortId}`,
+        `You already shortened this URL:\n${getBaseUrl()}/${existing.shortId}`,
       );
     }
 
@@ -73,9 +73,9 @@ module.exports = {
     });
 
     return interaction.editReply(
-      `✅ **Shortened!**\n` +
-        `🔗 ${getBaseUrl()}/${newUrl.shortId}\n` +
-        `📎 Original: <${originalUrl}>`,
+      `Shortened!\n` +
+        `Link: ${getBaseUrl()}/${newUrl.shortId}\n` +
+        `Original: <${originalUrl}>`,
     );
   },
 };
